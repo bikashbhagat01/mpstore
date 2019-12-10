@@ -233,7 +233,7 @@ public class Driver implements Actions {
 			double extra = 0;
 
 			if(n.getValue().getBrand().equalsIgnoreCase("apple") && n.getValue().getCost() >= 25000){
-				System.out.printf("Discounted Price = %.2f" + (0.995 * n.getValue().getCost()));
+				System.out.printf("Discounted Price = " + String.format("%.2f", (0.995 * n.getValue().getCost())));
 			}
 			
 			if(n.getValue().getBrand().equalsIgnoreCase("samsung")){

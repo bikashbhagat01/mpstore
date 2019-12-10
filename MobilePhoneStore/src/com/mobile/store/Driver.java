@@ -16,6 +16,8 @@ public class Driver implements Actions {
 		
 		Driver d = new Driver();
 		
+		d.initiator();
+		
 		boolean exCode = false;
 		
 		while(exCode == false){
@@ -39,12 +41,13 @@ public class Driver implements Actions {
 				
 				int criteria = sc.nextInt();
 				
-				if (!(criteria == 1 || criteria == 2 || criteria == 3 || criteria == 4))
+				if (criteria == 0)
+					intExCode = true;
+			
+				if (!(criteria == 1 || criteria == 2 || criteria == 3 || criteria == 0))
 					System.out.println("Incorrect criteria set. Please enter correct criteria.");
-				else 
-					if (criteria == 0)
-						intExCode = true;
-				else	
+				
+				if (criteria == 1 || criteria == 2 || criteria == 3 )
 					d.searchPhone(criteria);
 				}
 				break;
@@ -54,7 +57,7 @@ public class Driver implements Actions {
 				break;
 				
 			case 5:
-				System.out.println("Displaying Complete Inventory");
+				System.out.println("Displaying Complete Inventory \n");
 				d.displayAllPhone();
 				break;
 				
@@ -80,8 +83,9 @@ public class Driver implements Actions {
 	public void addPhone() {
 		// TODO Auto-generated method stub
 		
+		
 		this.phone.setMobileID();
-
+		this.phone.setMid(this.phone.getMobileID());
 		System.out.println("Enter details for new phone with generated ID : " + phone.getMobileID());
 		
 		System.out.println("Enter Brand : ");
@@ -99,30 +103,34 @@ public class Driver implements Actions {
 		System.out.println("Enter Type : ");
 		this.phone.setType(sc.next());
 		
-		inventory.put(this.phone.getMobileID(), new MobilePhone(phone));
+		
+		inventory.put(this.phone.getMid(), new MobilePhone(phone));
 		
 		System.out.println("Updated new phone entry");
 		
 	}
 
 	@Override
-	public int deletePhone() {
+	public long deletePhone() {
 		// TODO Auto-generated method stub
 		
 		System.out.println("Enter Phone ID to remove :");
-		int id = sc.nextInt();
+		long id = sc.nextLong();
 		
-		if (inventory.containsKey(id)){
-			inventory.remove(id);
-			System.out.println("Entry with id :" + id + "removed.");
-			return id;
-		}
-		else {
+		if (!(inventory.containsKey(id))){
+			
 			System.out.println("No entry with id : " + id + "found.");
 			return -1;
+			}
+			
+		inventory.remove(id);
+		System.out.println("Entry with id : " + id + " removed.");
+		return id;
+	
+		
 		}		
 		
-	}
+	
 
 	@Override
 	public int searchPhone(int criteria) {
@@ -139,8 +147,8 @@ public class Driver implements Actions {
 					if (n.getValue().getBrand().equalsIgnoreCase(searchBrand.trim())){
 						System.out.println(n.getValue());
 						flag = true;
+						System.out.println(LINEBREAK);				
 					}
-					System.out.println(LINEBREAK);				
 			}
 				if (!flag){
 					System.out.println("No items found with brand : " + searchBrand);
@@ -160,8 +168,8 @@ public class Driver implements Actions {
 				{
 					System.out.println(n.getValue());
 					flag = true;
+					System.out.println(LINEBREAK);				
 				}
-				System.out.println(LINEBREAK);				
 			}
 			if (!flag){
 				System.out.println("No items found with OS : " + searchOs);
@@ -181,8 +189,9 @@ public class Driver implements Actions {
 				{
 					System.out.println(n.getValue());
 					flag = true;
+					System.out.println(LINEBREAK);				
+
 				}
-				System.out.println(LINEBREAK);				
 			}
 			if (!flag){
 				System.out.println("No items found with Exact Cost : " + searchCost);
@@ -200,12 +209,13 @@ public class Driver implements Actions {
 		boolean flag = false;
 		for(Map.Entry<Long, MobilePhone> n : inventory.entrySet()){
 			
-			if(n.getValue().getCost() <= start && n.getValue().getCost() >= end )
+			if(n.getValue().getCost() >= start && n.getValue().getCost() <= end )
 			{
 				System.out.println(n.getValue());
 				flag = true;
+				System.out.println(LINEBREAK);				
+
 			}
-			System.out.println(LINEBREAK);				
 		}
 		if (!flag){
 			System.out.println("No items found within Cost Range : " + start + " <-> " + end);
@@ -232,13 +242,13 @@ public class Driver implements Actions {
 			System.out.println(n.getKey()+ " " + n.getValue());
 			double extra = 0;
 
-			if(n.getValue().getBrand().equalsIgnoreCase("apple") && n.getValue().getCost() >= 25000){
-				System.out.printf("Discounted Price = " + String.format("%.2f", (0.995 * n.getValue().getCost())));
-			}
-			
 			if(n.getValue().getBrand().equalsIgnoreCase("samsung")){
 				extra = 0.005;
 			} 
+			
+			if(n.getValue().getBrand().equalsIgnoreCase("apple") && n.getValue().getCost() >= 25000){
+				System.out.printf("Discounted Price = " + String.format("%.2f", (0.995 * n.getValue().getCost())));
+			}
 			
 			if(n.getValue().getType().equalsIgnoreCase("windows")) {
 				System.out.println("Discounted Price = " + String.format("%.2f", ((0.99 - extra) * n.getValue().getCost())));
@@ -268,6 +278,46 @@ public class Driver implements Actions {
 		System.out.println("0. Exit");
 
 		
+		
+	}
+	@Override
+	public void initiator() {
+		// TODO Auto-generated method stub
+		this.phone.setMobileID();
+		this.phone.setMid(this.phone.getMobileID());
+		
+		this.phone.setBrand("Apple");
+		this.phone.setCost(99000);
+		this.phone.setCamera(12);
+		this.phone.setStorage(128);
+		this.phone.setType("iOS");
+		
+		inventory.put(this.phone.getMid(), new MobilePhone(phone));
+		
+		
+		this.phone.setMobileID();
+		this.phone.setMid(this.phone.getMobileID());
+		
+		this.phone.setBrand("Samsung");
+		this.phone.setCost(38000);
+		this.phone.setCamera(12);
+		this.phone.setStorage(64);
+		this.phone.setType("Android");
+		
+		inventory.put(this.phone.getMid(), new MobilePhone(phone));
+		
+		
+		this.phone.setMobileID();
+		this.phone.setMid(this.phone.getMobileID());
+		
+		this.phone.setBrand("Nokia");
+		this.phone.setCost(14000);
+		this.phone.setCamera(8);
+		this.phone.setStorage(64);
+		this.phone.setType("Windows");
+		
+		
+		inventory.put(this.phone.getMid(), new MobilePhone(phone));
 		
 	}
 

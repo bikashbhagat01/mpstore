@@ -3,6 +3,7 @@ package com.mobile.store;
 public class MobilePhone {
 	
 	private static long mobileID = 1111;
+	private long mid;
 	private String brand;
 	private double cost;
 	private double camera;
@@ -15,6 +16,7 @@ public class MobilePhone {
 		this.camera = phone.camera;
 		this.storage = phone.storage;
 		this.type = phone.type;
+		this.mid = mobileID;
 	}
 	public MobilePhone(){
 		
@@ -71,8 +73,14 @@ public class MobilePhone {
 	
 	public String toString(){
 		
-	return "Mobile ID : " + mobileID + "\nBrand : " + brand + "\nCost : " + cost + "\nCamera : " + camera + "MP\nStorage : " + storage + "GB\nOS Type : "+ type;
+	return "Mobile ID : " + mid + "\nBrand : " + brand + "\nCost : Rs." + String.format("%.2f", cost) + "\nCamera : " + camera + "MP\nStorage : " + storage + "GB\nOS Type : "+ type;
 		
+	}
+	public long getMid() {
+		return mid;
+	}
+	public void setMid(long mid) {
+		this.mid = mid;
 	}
 	
 
